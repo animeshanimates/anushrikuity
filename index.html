@@ -1146,24 +1146,34 @@ footer {
         </div>
       </div>
 
-      <div class="form-wrap">
-        <div class="form-row">
-          <label>Full name</label>
-          <input type="text" class="form-input" placeholder="Your name">
+      <div class="form-wrap" id="contactForm">
+        <div id="formFields">
+          <div class="form-row">
+            <label for="f-name">Full name</label>
+            <input id="f-name" type="text" class="form-input" placeholder="Your name">
+          </div>
+          <div class="form-row">
+            <label for="f-contact">Phone / Email</label>
+            <input id="f-contact" type="text" class="form-input" placeholder="+91 or email@example.com">
+          </div>
+          <div class="form-row">
+            <label for="f-subject">Subject</label>
+            <input id="f-subject" type="text" class="form-input" placeholder="Internship, collaboration, query…">
+          </div>
+          <div class="form-row">
+            <label for="f-message">Message</label>
+            <textarea id="f-message" class="form-input" placeholder="What would you like to discuss?"></textarea>
+          </div>
+          <div id="formError" style="display:none;margin-top:14px;font-size:0.75rem;color:#e06060;letter-spacing:0.02em;"></div>
+          <button class="form-submit" id="formSubmit">Send via WhatsApp ›</button>
         </div>
-        <div class="form-row">
-          <label>Phone / Email</label>
-          <input type="text" class="form-input" placeholder="+91 or email@example.com">
+
+        <div id="formSuccess" style="display:none;text-align:center;padding:32px 0;">
+          <div style="font-size:2rem;margin-bottom:16px;color:rgba(90,216,122,0.9);">✓</div>
+          <div style="font-family:var(--serif);font-size:1.4rem;font-style:italic;color:var(--white);margin-bottom:10px;">Message sent!</div>
+          <div style="font-size:0.8rem;font-weight:300;color:rgba(255,255,255,0.35);line-height:1.6;">WhatsApp opened with your message pre-filled.<br>Anushri will get back to you shortly.</div>
+          <button id="formReset" style="margin-top:28px;background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.4);border-radius:980px;padding:10px 22px;font-family:var(--sans);font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase;cursor:none;transition:border-color 0.2s,color 0.2s;">Send another</button>
         </div>
-        <div class="form-row">
-          <label>Subject</label>
-          <input type="text" class="form-input" placeholder="Internship, collaboration, query…">
-        </div>
-        <div class="form-row">
-          <label>Message</label>
-          <textarea class="form-input" placeholder="What would you like to discuss?"></textarea>
-        </div>
-        <button class="form-submit">Send Message ›</button>
       </div>
     </div>
   </div>
@@ -1447,6 +1457,42 @@ function wrapWordsInMasks(container) {
   const points = new THREE.Points(geo, mat);
   scene.add(points);
 
+  // ---- Wireframe rotating geometry (restored) ----
+  const wMat = new THREE.MeshBasicMaterial({
+    color: 0x2a2a2a,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.55
+  });
+  const wMat2 = new THREE.MeshBasicMaterial({
+    color: 0x1a1a1a,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.32
+  });
+  const wMatAccent = new THREE.MeshBasicMaterial({
+    color: 0x3a2c1e,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.42
+  });
+
+  // Main torus — scaled up to match camera distance
+  const torusGeo = new THREE.TorusGeometry(7, 2, 22, 68);
+  const torus = new THREE.Mesh(torusGeo, wMat);
+  scene.add(torus);
+
+  // Inner torus — offset axis
+  const torusGeo2 = new THREE.TorusGeometry(4.5, 0.9, 14, 44);
+  const torus2 = new THREE.Mesh(torusGeo2, wMatAccent);
+  torus2.rotation.x = Math.PI / 2.5;
+  scene.add(torus2);
+
+  // Icosahedron core
+  const icoGeo = new THREE.IcosahedronGeometry(2.8, 1);
+  const ico = new THREE.Mesh(icoGeo, wMat2);
+  scene.add(ico);
+
   // Second, sparser layer for depth
   const geo2 = new THREE.BufferGeometry();
   const pos2 = new Float32Array(600 * 3);
@@ -1522,6 +1568,14 @@ function wrapWordsInMasks(container) {
     const t = clock.getElapsedTime();
     mat.uniforms.uTime.value = t;
     mat2.uniforms.uTime.value = t;
+
+    // Rotate wireframe geometry
+    torus.rotation.x = t * 0.12 + mouse2D.y * 0.18;
+    torus.rotation.y = t * 0.09 + mouse2D.x * 0.18;
+    torus2.rotation.x = -t * 0.08 + mouse2D.y * 0.12;
+    torus2.rotation.z =  t * 0.14 + mouse2D.x * 0.12;
+    ico.rotation.x = t * 0.18;
+    ico.rotation.y = t * 0.24 + mouse2D.x * 0.22;
 
     // Unproject mouse to world
     if (inHero) {
@@ -1851,6 +1905,92 @@ function wrapWordsInMasks(container) {
     });
     el.addEventListener('mouseleave', () => {
       el.style.transform = '';
+    });
+  });
+})();
+
+// ============================================================
+// WHATSAPP FORM SUBMIT
+// ============================================================
+(function() {
+  const WA_NUMBER = '919140724435'; // Anushri's number, no + or spaces
+
+  const submitBtn  = document.getElementById('formSubmit');
+  const resetBtn   = document.getElementById('formReset');
+  const formFields = document.getElementById('formFields');
+  const formSuccess= document.getElementById('formSuccess');
+  const errorEl    = document.getElementById('formError');
+
+  function showError(msg) {
+    errorEl.textContent = msg;
+    errorEl.style.display = 'block';
+    gsap.fromTo(errorEl, { x: -8 }, { x: 0, duration: 0.4, ease: 'elastic.out(1,0.5)' });
+  }
+  function clearError() {
+    errorEl.style.display = 'none';
+    errorEl.textContent = '';
+  }
+
+  submitBtn.addEventListener('click', () => {
+    clearError();
+
+    const name    = document.getElementById('f-name').value.trim();
+    const contact = document.getElementById('f-contact').value.trim();
+    const subject = document.getElementById('f-subject').value.trim();
+    const message = document.getElementById('f-message').value.trim();
+
+    // Validation
+    if (!name)    { showError('Please enter your name.'); return; }
+    if (!contact) { showError('Please enter your phone number or email.'); return; }
+    if (!message) { showError('Please enter a message.'); return; }
+
+    // Build the WhatsApp message
+    const text = [
+      `👋 New message from your portfolio website`,
+      ``,
+      `*Name:* ${name}`,
+      `*Contact:* ${contact}`,
+      subject ? `*Subject:* ${subject}` : null,
+      ``,
+      `*Message:*`,
+      message
+    ].filter(l => l !== null).join('\n');
+
+    const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
+
+    // Open WhatsApp in new tab
+    window.open(url, '_blank', 'noopener,noreferrer');
+
+    // Show success state
+    gsap.to(formFields, {
+      opacity: 0, y: -12, duration: 0.35, ease: 'expo.in',
+      onComplete: () => {
+        formFields.style.display = 'none';
+        formSuccess.style.display = 'block';
+        gsap.fromTo(formSuccess,
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.55, ease: 'expo.out' }
+        );
+      }
+    });
+  });
+
+  // "Send another" resets the form
+  resetBtn.addEventListener('click', () => {
+    gsap.to(formSuccess, {
+      opacity: 0, y: -10, duration: 0.3, ease: 'expo.in',
+      onComplete: () => {
+        formSuccess.style.display = 'none';
+        // Clear inputs
+        ['f-name','f-contact','f-subject','f-message'].forEach(id => {
+          document.getElementById(id).value = '';
+        });
+        formFields.style.display = 'block';
+        gsap.fromTo(formFields,
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.55, ease: 'expo.out' }
+        );
+      }
     });
   });
 })();
