@@ -1,0 +1,1287 @@
+html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Anushri Kuity — Law Student</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=DM+Sans:ital,wght@0,200;0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  --ink:         #0a090e;
+  --ink-2:       #110f18;
+  --ink-3:       #1a1722;
+  --ink-4:       #252232;
+  --gold:        #c9943a;
+  --gold-light:  #e8b96a;
+  --gold-pale:   #f5e4c0;
+  --cream:       #f8f4ee;
+  --cream-2:     #ede8de;
+  --cream-3:     #d9d0bf;
+  --text-body:   #3a3347;
+  --muted:       #7a7090;
+  --white:       #ffffff;
+  --crimson:     #8c1c2e;
+  --crimson-l:   #b52a3e;
+
+  --serif: 'Cormorant Garant', Georgia, 'Times New Roman', serif;
+  --sans:  'DM Sans', system-ui, sans-serif;
+
+  --ease:        cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);
+
+  --s-v: 110px;
+}
+
+/* ============================================================
+   RESET
+   ============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: var(--sans);
+  background: var(--ink);
+  color: var(--white);
+  overflow-x: hidden;
+}
+img, canvas { display: block; }
+::-webkit-scrollbar { width: 0; }
+::selection { background: var(--gold); color: var(--ink); }
+
+/* ============================================================
+   CURSOR
+   ============================================================ */
+@media (pointer: fine) {
+  * { cursor: none !important; }
+  #cur {
+    position: fixed; top:0; left:0;
+    width: 9px; height: 9px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform .1s var(--ease), opacity .3s;
+    mix-blend-mode: exclusion;
+  }
+  #cur-ring {
+    position: fixed; top:0; left:0;
+    width: 38px; height: 38px;
+    border: 1.5px solid rgba(201,148,58,.5);
+    border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: width .3s var(--ease-expo), height .3s var(--ease-expo), border-color .25s, opacity .3s;
+  }
+  body.cur-h #cur { transform: translate(-50%,-50%) scale(2.8); }
+  body.cur-h #cur-ring { width: 54px; height: 54px; border-color: rgba(201,148,58,.8); }
+  body.cur-c #cur { transform: translate(-50%,-50%) scale(.6); }
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+#nav {
+  position: fixed; top:0; left:0; right:0; z-index: 800;
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px;
+  background: rgba(10,9,14,.8);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(201,148,58,.12);
+  transition: background .4s, border-color .4s;
+}
+#nav.lit {
+  background: rgba(248,244,238,.9);
+  border-bottom-color: rgba(10,9,14,.12);
+}
+#nav.lit .nav-logo,
+#nav.lit .nav-links a { color: var(--ink); }
+#nav.lit .nav-cta { color: var(--crimson); }
+
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: .01em;
+  color: var(--white);
+  text-decoration: none;
+  transition: color .25s, opacity .2s;
+}
+.nav-logo:hover { opacity: .7; }
+.nav-logo em { font-style: italic; color: var(--gold-light); }
+
+.nav-links {
+  position: absolute; left:50%; transform: translateX(-50%);
+  display: flex; gap: 36px;
+}
+.nav-links a {
+  font-size: .76rem; font-weight: 400; letter-spacing: .04em;
+  text-transform: uppercase; color: rgba(255,255,255,.7);
+  text-decoration: none;
+  transition: color .2s;
+  white-space: nowrap;
+}
+.nav-links a:hover { color: var(--gold-light); }
+.nav-cta {
+  font-size: .8rem; font-weight: 500; letter-spacing: .01em;
+  color: var(--gold-light); text-decoration: none;
+  transition: opacity .2s; white-space: nowrap;
+}
+.nav-cta:hover { opacity: .7; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+#hero {
+  position: relative; min-height: 100svh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; overflow: hidden;
+  background: var(--ink);
+}
+#hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 80%, rgba(140,28,46,.18) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 80% 20%, rgba(201,148,58,.12) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 50% at 20% 60%, rgba(37,34,50,.8) 0%, transparent 70%);
+  z-index: 0;
+}
+.hero-lines {
+  position: absolute; inset: 0; z-index: 0;
+  overflow: hidden;
+}
+.hero-lines svg { width: 100%; height: 100%; opacity: .12; }
+
+.hero-inner {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column;
+  align-items: center; padding: 100px 24px 60px;
+  max-width: 900px;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(201,148,58,.1);
+  border: 1px solid rgba(201,148,58,.3);
+  border-radius: 980px;
+  padding: 7px 18px 7px 12px;
+  margin-bottom: 28px;
+  opacity: 0; animation: up .9s .3s var(--ease-expo) forwards;
+}
+.hero-badge-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--gold);
+  box-shadow: 0 0 8px var(--gold);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+.hero-badge-text {
+  font-size: .72rem; font-weight: 500; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--gold-light);
+}
+
+.hero-h1 {
+  font-family: var(--serif);
+  font-size: clamp(54px, 10vw, 108px);
+  font-weight: 300; line-height: .95;
+  letter-spacing: -.02em;
+  color: var(--white);
+  opacity: 0; animation: up 1s .5s var(--ease-expo) forwards;
+}
+.hero-h1 .g { color: var(--gold-light); font-style: italic; }
+.hero-h1 .sm { font-size: clamp(36px, 6vw, 68px); display: block; margin-top: 4px; opacity: .4; font-weight: 300; }
+
+.hero-rule {
+  width: 60px; height: 1px; background: var(--gold); margin: 32px auto;
+  opacity: 0; animation: up .8s .72s var(--ease-expo) forwards;
+}
+.hero-sub {
+  font-size: clamp(16px, 2.2vw, 20px); font-weight: 300; line-height: 1.65;
+  letter-spacing: .01em; color: rgba(255,255,255,.5); max-width: 520px;
+  opacity: 0; animation: up .9s .88s var(--ease-expo) forwards;
+}
+
+.hero-btns {
+  display: flex; gap: 14px; flex-wrap: wrap;
+  justify-content: center; margin-top: 40px;
+  opacity: 0; animation: up .9s 1.06s var(--ease-expo) forwards;
+}
+.btn-call {
+  display: inline-flex; align-items: center; gap: 9px;
+  background: var(--gold); color: var(--ink);
+  border: none; border-radius: 980px;
+  padding: 14px 28px;
+  font-family: var(--sans); font-size: .9rem; font-weight: 500;
+  text-decoration: none; letter-spacing: .01em;
+  transition: background .2s, transform .2s var(--ease-spring), box-shadow .25s;
+  box-shadow: 0 4px 24px rgba(201,148,58,.35);
+  white-space: nowrap;
+}
+.btn-call:hover {
+  background: var(--gold-light);
+  box-shadow: 0 6px 32px rgba(201,148,58,.55);
+}
+.btn-call:active { transform: scale(.96); }
+.btn-call svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+.btn-wa {
+  display: inline-flex; align-items: center; gap: 9px;
+  background: rgba(37,211,102,.12);
+  border: 1.5px solid rgba(37,211,102,.4);
+  color: #5ad87a; border-radius: 980px;
+  padding: 13px 26px;
+  font-family: var(--sans); font-size: .9rem; font-weight: 500;
+  text-decoration: none; letter-spacing: .01em;
+  transition: background .25s, border-color .25s, transform .2s var(--ease-spring);
+  white-space: nowrap;
+}
+.btn-wa:hover {
+  background: rgba(37,211,102,.2);
+  border-color: rgba(37,211,102,.65);
+}
+.btn-wa:active { transform: scale(.96); }
+.btn-wa svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: transparent;
+  border: 1.5px solid rgba(255,255,255,.2);
+  color: rgba(255,255,255,.7); border-radius: 980px;
+  padding: 13px 26px;
+  font-family: var(--sans); font-size: .9rem; font-weight: 400;
+  text-decoration: none; letter-spacing: .01em;
+  transition: border-color .25s, color .25s;
+  white-space: nowrap;
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,.45); color: var(--white); }
+
+.hero-scroll {
+  position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 9px;
+  z-index: 2; opacity: 0; animation: fadeIn 1s 1.6s forwards;
+}
+.scroll-line {
+  width: 1px; height: 42px;
+  background: linear-gradient(to bottom, rgba(201,148,58,.7), transparent);
+  animation: drip 2.2s ease-in-out infinite;
+}
+@keyframes drip {
+  0%,100%{ transform: scaleY(1); opacity:.6 }
+  50%{ transform: scaleY(.55); opacity:.2 }
+}
+.scroll-txt {
+  font-size: .6rem; letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(255,255,255,.25); font-weight: 400;
+}
+
+/* ============================================================
+   QUOTE STRIPE
+   ============================================================ */
+#stripe {
+  background: var(--gold);
+  padding: 28px 24px;
+  text-align: center; overflow: hidden;
+}
+.stripe-q {
+  font-family: var(--serif);
+  font-size: clamp(20px, 3.5vw, 30px);
+  font-weight: 400; font-style: italic;
+  letter-spacing: -.01em; color: var(--ink);
+  max-width: 700px; margin: 0 auto; line-height: 1.3;
+}
+.stripe-q span { font-weight: 600; font-style: normal; }
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+#about {
+  background: var(--cream);
+  padding: var(--s-v) 0;
+}
+.sec-inner {
+  max-width: 1040px; margin: 0 auto; padding: 0 44px;
+}
+.sec-inner.wide { max-width: 1200px; }
+.kicker {
+  font-size: .7rem; font-weight: 500; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--crimson);
+  display: block; margin-bottom: 14px;
+}
+.kicker-g { color: var(--gold); }
+.h2-dark {
+  font-family: var(--serif);
+  font-size: clamp(38px, 5vw, 60px);
+  font-weight: 400; letter-spacing: -.02em; line-height: 1.04;
+  color: var(--ink);
+}
+.h2-dark em { color: var(--crimson); }
+.h2-light {
+  font-family: var(--serif);
+  font-size: clamp(38px, 5vw, 60px);
+  font-weight: 400; letter-spacing: -.02em; line-height: 1.04;
+  color: var(--white);
+}
+.h2-light em { color: var(--gold-light); }
+
+.about-cols {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 72px;
+  margin-top: 60px;
+  align-items: start;
+}
+.about-body p {
+  font-size: 1.05rem; font-weight: 300; line-height: 1.75;
+  letter-spacing: -.005em; color: var(--text-body);
+  margin-bottom: 22px;
+}
+.about-body p:last-child { margin-bottom: 0; }
+.about-body strong { font-weight: 500; color: var(--ink); }
+
+.focus-list {
+  margin-top: 40px; border-top: 1px solid var(--cream-3);
+}
+.focus-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 17px 0; border-bottom: 1px solid var(--cream-3);
+  font-size: .95rem; font-weight: 400; color: var(--text-body);
+  letter-spacing: -.005em;
+  transition: color .2s, padding-left .25s var(--ease-expo);
+}
+.focus-item:hover { color: var(--ink); padding-left: 8px; }
+.focus-item .arr { color: var(--crimson); transition: transform .2s var(--ease-spring); }
+.focus-item:hover .arr { transform: translateX(6px); }
+
+.about-stats {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.stat-card {
+  background: var(--ink);
+  padding: 30px 28px;
+  transition: transform .3s var(--ease-spring);
+}
+.stat-card:hover { transform: translateX(-5px); }
+.stat-n {
+  font-family: var(--serif);
+  font-size: 3.2rem; font-weight: 300; letter-spacing: -.03em;
+  color: var(--gold-light); line-height: 1;
+  margin-bottom: 7px;
+}
+.stat-n sup { font-size: 1.6rem; }
+.stat-l {
+  font-size: .85rem; font-weight: 300; color: rgba(255,255,255,.45);
+  letter-spacing: -.004em; line-height: 1.4;
+}
+.stat-card:nth-child(2) .stat-n { color: var(--white); }
+.stat-card:nth-child(3) .stat-n { color: var(--crimson-l); }
+.stat-card:nth-child(4) .stat-n { color: var(--gold-pale); }
+
+/* ============================================================
+   AREAS
+   ============================================================ */
+#areas {
+  background: var(--ink-2);
+  padding: var(--s-v) 0;
+}
+.areas-intro {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 48px; align-items: end;
+  margin-bottom: 64px;
+}
+.areas-body {
+  font-size: 1.05rem; font-weight: 300; line-height: 1.7;
+  color: rgba(255,255,255,.45); letter-spacing: -.005em;
+  align-self: end;
+}
+.areas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.area-card {
+  background: var(--ink-3);
+  padding: 40px 32px;
+  position: relative; overflow: hidden;
+  transition: background .3s;
+}
+.area-card::before {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--crimson));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .45s var(--ease-expo);
+}
+.area-card:hover { background: #1e1b2a; }
+.area-card:hover::before { transform: scaleX(1); }
+.area-num {
+  font-family: var(--serif);
+  font-size: 3.5rem; font-weight: 300; line-height: 1;
+  color: rgba(201,148,58,.18); letter-spacing: -.04em;
+  margin-bottom: 22px;
+  transition: color .3s;
+}
+.area-card:hover .area-num { color: rgba(201,148,58,.4); }
+.area-title {
+  font-family: var(--serif);
+  font-size: 1.45rem; font-weight: 400; letter-spacing: -.01em;
+  color: var(--white); margin-bottom: 14px; line-height: 1.2;
+}
+.area-desc {
+  font-size: .85rem; font-weight: 300; line-height: 1.65;
+  color: rgba(255,255,255,.4); letter-spacing: -.003em;
+}
+.area-tag {
+  display: inline-block; margin-top: 22px;
+  font-size: .68rem; font-weight: 500; letter-spacing: .05em;
+  text-transform: uppercase; color: var(--gold);
+  border: 1px solid rgba(201,148,58,.25);
+  border-radius: 980px; padding: 4px 14px;
+}
+
+/* ============================================================
+   EDUCATION
+   ============================================================ */
+#education {
+  background: var(--cream);
+  padding: var(--s-v) 0;
+}
+.edu-layout {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 72px; margin-top: 60px; align-items: start;
+}
+.edu-card {
+  background: var(--ink);
+  padding: 48px 44px;
+  position: relative; overflow: hidden;
+}
+.edu-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+  background: linear-gradient(to bottom, var(--gold), var(--crimson));
+}
+.edu-year {
+  font-size: .72rem; font-weight: 500; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 18px;
+}
+.edu-degree {
+  font-family: var(--serif);
+  font-size: 2.1rem; font-weight: 400; letter-spacing: -.015em;
+  color: var(--white); line-height: 1.15; margin-bottom: 8px;
+}
+.edu-institute {
+  font-size: .92rem; font-weight: 300; color: rgba(255,255,255,.45);
+  letter-spacing: -.003em; margin-bottom: 28px;
+}
+.edu-pills {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.edu-pill {
+  font-size: .72rem; font-weight: 400; letter-spacing: .02em;
+  color: rgba(255,255,255,.5);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 980px; padding: 5px 14px;
+}
+
+.edu-right-body {
+  font-size: 1.05rem; font-weight: 300; line-height: 1.75;
+  color: var(--text-body); margin-bottom: 36px;
+}
+.edu-right-body strong { font-weight: 500; color: var(--ink); }
+.course-list {
+  display: flex; flex-direction: column;
+  gap: 2px; margin-top: 28px;
+}
+.course-item {
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--cream-2); padding: 14px 18px;
+  font-size: .88rem; font-weight: 400; color: var(--text-body);
+  transition: background .2s, color .2s;
+}
+.course-item:hover { background: var(--cream-3); color: var(--ink); }
+.course-tag {
+  font-size: .68rem; font-weight: 500; color: var(--muted);
+  background: var(--cream-3); border-radius: 4px;
+  padding: 3px 10px;
+}
+
+/* ============================================================
+   COMPETENCIES
+   ============================================================ */
+#comp {
+  background: var(--ink);
+  padding: var(--s-v) 0;
+}
+.comp-cols {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 72px; margin-top: 60px; align-items: start;
+}
+.comp-group { margin-bottom: 44px; }
+.comp-group:last-child { margin-bottom: 0; }
+.comp-label {
+  font-size: .68rem; font-weight: 500; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  display: block; margin-bottom: 22px;
+  padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.skill-row { margin-bottom: 20px; }
+.skill-row:last-child { margin-bottom: 0; }
+.skill-head {
+  display: flex; justify-content: space-between;
+  margin-bottom: 9px;
+}
+.skill-name { font-size: .88rem; font-weight: 400; color: rgba(255,255,255,.8); }
+.skill-pct  { font-size: .8rem; font-weight: 400; color: var(--muted); }
+.skill-track {
+  height: 1px; background: rgba(255,255,255,.08);
+  position: relative;
+}
+.skill-fill {
+  height: 100%; width: 0;
+  background: linear-gradient(90deg, var(--gold), var(--crimson));
+  transition: width 1.8s var(--ease-expo);
+}
+
+.comp-quote {
+  background: var(--ink-3);
+  padding: 44px 40px; margin-bottom: 2px;
+}
+.comp-quote-text {
+  font-family: var(--serif);
+  font-size: 1.6rem; font-weight: 400; font-style: italic;
+  letter-spacing: -.01em; line-height: 1.35;
+  color: var(--white); margin-bottom: 16px;
+}
+.comp-quote-text em { color: var(--gold-light); font-style: normal; }
+.comp-quote-by {
+  font-size: .78rem; font-weight: 400; color: var(--muted);
+  letter-spacing: .01em;
+}
+.other-skills { display: flex; flex-direction: column; gap: 2px; margin-top: 2px; }
+.other-skill {
+  background: var(--ink-3);
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px;
+  font-size: .88rem; font-weight: 300; color: rgba(255,255,255,.7);
+  transition: background .2s;
+}
+.other-skill:hover { background: var(--ink-4); }
+.os-tag {
+  font-size: .68rem; font-weight: 400; color: var(--gold);
+  background: rgba(201,148,58,.1); border-radius: 4px;
+  padding: 3px 10px; letter-spacing: .02em;
+}
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+#contact {
+  background: var(--ink-2);
+  padding: var(--s-v) 0;
+}
+.contact-cols {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 72px; margin-top: 60px; align-items: start;
+}
+.contact-sub {
+  font-size: 1.05rem; font-weight: 300; line-height: 1.7;
+  color: rgba(255,255,255,.4); margin-top: 20px; margin-bottom: 44px;
+}
+.contact-meta { display: flex; flex-direction: column; gap: 20px; }
+.cm-item {
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.cm-label {
+  font-size: .68rem; font-weight: 500; letter-spacing: .08em;
+  text-transform: uppercase; color: rgba(255,255,255,.25);
+  min-width: 74px; padding-top: 2px; flex-shrink: 0;
+}
+.cm-val {
+  font-size: .9rem; font-weight: 300;
+  color: rgba(255,255,255,.5); line-height: 1.5;
+}
+.cm-val a { color: inherit; text-decoration: none; }
+.cm-val a:hover { color: var(--gold-light); }
+
+.cta-btns {
+  display: flex; flex-direction: column; gap: 12px;
+  margin-top: 32px;
+}
+.cta-call {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--gold); color: var(--ink);
+  border: none; border-radius: 14px; padding: 18px 28px;
+  font-family: var(--sans); font-size: 1rem; font-weight: 500;
+  text-decoration: none; letter-spacing: .01em;
+  transition: background .2s, transform .2s var(--ease-spring), box-shadow .25s;
+  box-shadow: 0 4px 24px rgba(201,148,58,.3);
+}
+.cta-call:hover { background: var(--gold-light); box-shadow: 0 6px 32px rgba(201,148,58,.5); }
+.cta-call:active { transform: scale(.97); }
+.cta-call svg { width: 20px; height: 20px; flex-shrink: 0; }
+.cta-call-info { display: flex; flex-direction: column; gap: 2px; }
+.cta-call-label { font-size: .7rem; font-weight: 500; opacity: .6; letter-spacing: .03em; text-transform: uppercase; }
+.cta-call-num   { font-size: 1.1rem; font-weight: 600; letter-spacing: .01em; }
+
+.cta-whatsapp {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(37,211,102,.1);
+  border: 1.5px solid rgba(37,211,102,.3);
+  border-radius: 14px; padding: 18px 28px;
+  font-family: var(--sans); font-size: 1rem; font-weight: 500;
+  color: #5ad87a; text-decoration: none; letter-spacing: .01em;
+  transition: background .2s, border-color .2s, transform .2s var(--ease-spring);
+}
+.cta-whatsapp:hover { background: rgba(37,211,102,.18); border-color: rgba(37,211,102,.5); }
+.cta-whatsapp:active { transform: scale(.97); }
+.cta-whatsapp svg { width: 20px; height: 20px; flex-shrink: 0; }
+.cta-whatsapp-info { display: flex; flex-direction: column; gap: 2px; }
+.cta-wa-label { font-size: .7rem; font-weight: 500; opacity: .6; letter-spacing: .03em; text-transform: uppercase; }
+.cta-wa-num   { font-size: 1.1rem; font-weight: 600; letter-spacing: .01em; }
+
+.form-wrap {
+  background: var(--ink-3); padding: 44px 40px;
+}
+.form-row { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; }
+.form-row:last-of-type { margin-bottom: 0; }
+.form-row label {
+  font-size: .75rem; font-weight: 400; letter-spacing: .02em;
+  color: rgba(255,255,255,.3);
+}
+.form-input {
+  width: 100%; background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 8px; padding: 13px 16px;
+  font-family: var(--sans); font-size: .9rem; font-weight: 300;
+  color: var(--white); outline: none;
+  transition: border-color .2s, background .2s;
+  -webkit-appearance: none;
+}
+.form-input::placeholder { color: rgba(255,255,255,.2); }
+.form-input:focus { border-color: rgba(201,148,58,.4); background: rgba(255,255,255,.06); }
+textarea.form-input { resize: none; height: 110px; }
+.form-submit {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--white); color: var(--ink);
+  border: none; border-radius: 980px;
+  padding: 13px 30px; margin-top: 20px;
+  font-family: var(--sans); font-size: .9rem; font-weight: 500;
+  letter-spacing: .01em; cursor: none;
+  transition: background .2s, transform .2s var(--ease-spring);
+}
+.form-submit:hover { background: var(--cream-2); }
+.form-submit:active { transform: scale(.96); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  background: var(--ink);
+  border-top: 1px solid rgba(201,148,58,.12);
+  padding: 28px 44px;
+}
+.footer-in {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-copy {
+  font-size: .72rem; font-weight: 300; letter-spacing: -.002em;
+  color: rgba(255,255,255,.2);
+}
+.footer-copy em { font-style: normal; color: var(--gold); opacity: .7; }
+.footer-links {
+  display: flex; gap: 28px; list-style: none;
+}
+.footer-links a {
+  font-size: .72rem; font-weight: 300; letter-spacing: .01em;
+  color: rgba(255,255,255,.3); text-decoration: none;
+  text-transform: uppercase; transition: color .2s;
+}
+.footer-links a:hover { color: var(--gold-light); }
+
+/* ============================================================
+   DECORATIVE ORNAMENT
+   ============================================================ */
+.ornament {
+  text-align: center; margin: 0 0 48px;
+  font-family: var(--serif); font-size: 1.8rem; color: rgba(201,148,58,.3);
+  letter-spacing: .1em; line-height: 1;
+  user-select: none;
+}
+
+/* ============================================================
+   REVEALS
+   ============================================================ */
+.rv {
+  opacity: 0;
+  transform: translateY(22px);
+  filter: blur(5px);
+  transition: opacity .85s var(--ease-expo), transform .85s var(--ease-expo), filter .85s var(--ease-expo);
+}
+.rv.vis { opacity: 1; transform: translateY(0); filter: blur(0); }
+.rv-d1 { transition-delay: .1s; }
+.rv-d2 { transition-delay: .22s; }
+.rv-d3 { transition-delay: .36s; }
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+@keyframes up {
+  from { opacity:0; transform: translateY(20px); filter: blur(4px); }
+  to   { opacity:1; transform: translateY(0);    filter: blur(0);   }
+}
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+
+/* ============================================================
+   MOBILE — CRITICAL
+   ============================================================ */
+@media (max-width: 860px) {
+  :root { --s-v: 80px; }
+  .nav-links { display: none; }
+  #nav { padding: 0 22px; }
+}
+@media (max-width: 700px) {
+  .about-cols,
+  .areas-intro,
+  .edu-layout,
+  .comp-cols,
+  .contact-cols { grid-template-columns: 1fr; gap: 40px; }
+  .areas-grid { grid-template-columns: 1fr; }
+  .sec-inner { padding: 0 22px; }
+  footer { padding: 24px 22px; }
+  .footer-in { flex-direction: column; align-items: flex-start; }
+  .hero-h1 { letter-spacing: -.015em; }
+  .hero-btns { flex-direction: column; align-items: stretch; }
+  .btn-call, .btn-wa, .btn-ghost {
+    justify-content: center;
+  }
+  .form-wrap { padding: 32px 24px; }
+  .edu-card { padding: 36px 28px; }
+  .comp-quote { padding: 32px 28px; }
+  .contact-cols { margin-top: 44px; }
+  .cta-btns { flex-direction: column; }
+}
+@media (max-width: 480px) {
+  .hero-inner { padding: 90px 18px 60px; }
+  .area-card { padding: 32px 24px; }
+  .stat-card { padding: 24px 22px; }
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">Anushri <em>Kuity</em></a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#areas">Practice</a>
+    <a href="#education">Education</a>
+    <a href="#comp">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="tel:+919140724435" class="nav-cta">Call Now</a>
+</nav>
+
+
+<!-- HERO -->
+<section id="hero">
+  <div id="hero-bg"></div>
+  <div class="hero-lines">
+    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="rg1" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#c9943a" stop-opacity=".6"/>
+          <stop offset="100%" stop-color="#c9943a" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <!-- decorative arc lines -->
+      <circle cx="720" cy="450" r="280" fill="none" stroke="#c9943a" stroke-width=".8" opacity=".35"/>
+      <circle cx="720" cy="450" r="360" fill="none" stroke="#c9943a" stroke-width=".5" opacity=".2"/>
+      <circle cx="720" cy="450" r="440" fill="none" stroke="#c9943a" stroke-width=".4" opacity=".12"/>
+      <circle cx="720" cy="450" r="520" fill="none" stroke="#8c1c2e" stroke-width=".5" opacity=".15"/>
+      <!-- horizontal rule lines -->
+      <line x1="0" y1="449" x2="380" y2="449" stroke="#c9943a" stroke-width=".6" opacity=".2"/>
+      <line x1="1060" y1="449" x2="1440" y2="449" stroke="#c9943a" stroke-width=".6" opacity=".2"/>
+      <!-- corner ornaments -->
+      <path d="M 60 60 L 60 100 M 60 60 L 100 60" stroke="#c9943a" stroke-width="1.2" fill="none" opacity=".4"/>
+      <path d="M 1380 60 L 1380 100 M 1380 60 L 1340 60" stroke="#c9943a" stroke-width="1.2" fill="none" opacity=".4"/>
+      <path d="M 60 840 L 60 800 M 60 840 L 100 840" stroke="#c9943a" stroke-width="1.2" fill="none" opacity=".4"/>
+      <path d="M 1380 840 L 1380 800 M 1380 840 L 1340 840" stroke="#c9943a" stroke-width="1.2" fill="none" opacity=".4"/>
+    </svg>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      <span class="hero-badge-text">3rd Year · BA LLB · SMS Law College</span>
+    </div>
+
+    <h1 class="hero-h1">
+      Anushri<br>
+      <span class="g">Kuity</span>
+      <span class="sm">Advocate in the making.</span>
+    </h1>
+
+    <div class="hero-rule"></div>
+
+    <p class="hero-sub">
+      Law student. Researcher. Thinker. Committed to the craft of
+      legal argument, one precedent at a time.
+    </p>
+
+    <div class="hero-btns">
+      <a href="tel:+919140724435" class="btn-call">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.63 12 19.79 19.79 0 0 1 1.56 3.36 2 2 0 0 1 3.56 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.5a16 16 0 0 0 6 6l.82-.82a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.38 16z"/></svg>
+        Call +91 91407 24435
+      </a>
+      <a href="https://wa.me/919140724435" target="_blank" rel="noopener noreferrer" class="btn-wa">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        WhatsApp
+      </a>
+      <a href="#about" class="btn-ghost">
+        Explore Profile ›
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span class="scroll-txt">Scroll</span>
+  </div>
+</section>
+
+
+<!-- QUOTE STRIPE -->
+<div id="stripe">
+  <p class="stripe-q">"The <span>law</span> is reason, free from passion."
+  <br><small style="font-size:.65em; opacity:.55; font-style:normal; font-weight:400; letter-spacing:.04em; display:block; margin-top:8px;">— Aristotle</small></p>
+</div>
+
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-inner">
+    <span class="kicker rv">About</span>
+    <h2 class="h2-dark rv rv-d1">Third year in.<br><em>Fully committed.</em></h2>
+
+    <div class="about-cols">
+      <div class="about-body rv rv-d1">
+        <p>
+          Anushri Kuity is a third-year <strong>BA LLB</strong> student at <strong>SMS Law College</strong>, Lucknow — building the foundations of a legal career grounded in rigour, clarity, and genuine intellectual curiosity.
+        </p>
+        <p>
+          Three years into a five-year integrated degree, she has moved through the foundational pillars of Indian law with steadily growing depth — from constitutional essentials to the procedural mechanics of civil and criminal courts. The classroom, for Anushri, is only the beginning.
+        </p>
+        <p>
+          Her interests span <strong>civil litigation</strong>, <strong>criminal law</strong>, and the emerging frontiers of corporate and family law. She approaches each subject with the same conviction: that precision in law is not just a professional virtue — it is a civic responsibility.
+        </p>
+        <div class="focus-list rv rv-d2">
+          <div class="focus-item">Civil Law &amp; Procedure <span class="arr">›</span></div>
+          <div class="focus-item">Criminal Law &amp; Jurisprudence <span class="arr">›</span></div>
+          <div class="focus-item">Constitutional Law <span class="arr">›</span></div>
+          <div class="focus-item">Corporate &amp; Commercial Law <span class="arr">›</span></div>
+          <div class="focus-item">Family Law &amp; Personal Rights <span class="arr">›</span></div>
+        </div>
+      </div>
+
+      <div class="about-stats rv rv-d2">
+        <div class="stat-card">
+          <div class="stat-n">3<sup>rd</sup></div>
+          <div class="stat-l">Year of BA LLB — midway through a five-year journey</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-n" style="font-size:2.4rem;letter-spacing:-.02em">BA LLB</div>
+          <div class="stat-l">Integrated law programme — SMS Law College, Lucknow</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-n">5+</div>
+          <div class="stat-l">Core subjects mastered across criminal, civil &amp; constitutional law</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-n">LKO</div>
+          <div class="stat-l">Based in Lucknow, Uttar Pradesh — heart of North India's legal world</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- PRACTICE AREAS -->
+<section id="areas">
+  <div class="sec-inner wide">
+    <div class="areas-intro">
+      <div>
+        <span class="kicker-g kicker rv">Practice Areas</span>
+        <h2 class="h2-light rv rv-d1">Where law meets <em>purpose.</em></h2>
+      </div>
+      <p class="areas-body rv rv-d2">
+        A BA LLB curriculum spans the full breadth of the Indian legal system. These are the domains Anushri has engaged most deeply — with both academic focus and practical ambition.
+      </p>
+    </div>
+    <div class="areas-grid">
+      <div class="area-card rv">
+        <div class="area-num">01</div>
+        <h3 class="area-title">Constitutional Law</h3>
+        <p class="area-desc">Fundamental rights, separation of powers, judicial review — the architecture of the Indian Republic as interpreted by its highest courts.</p>
+        <span class="area-tag">Core</span>
+      </div>
+      <div class="area-card rv rv-d1">
+        <div class="area-num">02</div>
+        <h3 class="area-title">Criminal Law</h3>
+        <p class="area-desc">IPC, CrPC, and the evolving framework of criminal justice — from investigation through trial to appeal.</p>
+        <span class="area-tag">Core</span>
+      </div>
+      <div class="area-card rv rv-d2">
+        <div class="area-num">03</div>
+        <h3 class="area-title">Civil Procedure</h3>
+        <p class="area-desc">The CPC, evidence rules, and the mechanics of civil adjudication that determine how disputes travel through India's court system.</p>
+        <span class="area-tag">Procedural</span>
+      </div>
+      <div class="area-card rv">
+        <div class="area-num">04</div>
+        <h3 class="area-title">Corporate &amp; Commercial</h3>
+        <p class="area-desc">Company law, contracts, and the legal foundations of business — a growing focus as commercial disputes dominate Indian litigation.</p>
+        <span class="area-tag">Emerging Focus</span>
+      </div>
+      <div class="area-card rv rv-d1">
+        <div class="area-num">05</div>
+        <h3 class="area-title">Family Law</h3>
+        <p class="area-desc">Personal laws, succession, matrimonial rights — the intersection of law and lived human experience in its most personal form.</p>
+        <span class="area-tag">Study</span>
+      </div>
+      <div class="area-card rv rv-d2">
+        <div class="area-num">06</div>
+        <h3 class="area-title">Jurisprudence</h3>
+        <p class="area-desc">The philosophy behind the rules — why law exists, how it evolves, and the theories that explain its authority and legitimacy.</p>
+        <span class="area-tag">Theory</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="sec-inner">
+    <span class="kicker rv">Education</span>
+    <h2 class="h2-dark rv rv-d1">The programme behind<br><em>the person.</em></h2>
+
+    <div class="edu-layout">
+      <div class="rv rv-d1">
+        <div class="edu-card">
+          <div class="edu-year">2022 — 2027 (Ongoing)</div>
+          <div class="edu-degree">Bachelor of Arts<br>+ LLB</div>
+          <div class="edu-institute">SMS Law College · Lucknow, Uttar Pradesh</div>
+          <div class="edu-pills">
+            <span class="edu-pill">5-Year Integrated</span>
+            <span class="edu-pill">Affiliated University</span>
+            <span class="edu-pill">Lucknow Bar Ecosystem</span>
+            <span class="edu-pill">3rd Year — Current</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rv rv-d2">
+        <p class="edu-right-body">
+          SMS Law College is one of Lucknow's established institutions for legal education, situated within one of India's most active High Court jurisdictions. Being a student here means exposure not just to the curriculum, but to a living, breathing legal ecosystem — the <strong>Allahabad High Court's Lucknow Bench</strong>, its practitioners, and its traditions.
+        </p>
+        <p class="edu-right-body">
+          The BA LLB programme integrates liberal arts foundations with comprehensive legal training, producing graduates who think critically about law's place in society — not just its mechanics.
+        </p>
+
+        <div class="course-list">
+          <div class="course-item">Constitutional Law I &amp; II <span class="course-tag">Core</span></div>
+          <div class="course-item">Indian Penal Code <span class="course-tag">Criminal</span></div>
+          <div class="course-item">Code of Criminal Procedure <span class="course-tag">Procedure</span></div>
+          <div class="course-item">Contract Law &amp; Specific Relief <span class="course-tag">Civil</span></div>
+          <div class="course-item">Code of Civil Procedure <span class="course-tag">Procedure</span></div>
+          <div class="course-item">Law of Evidence <span class="course-tag">Evidence</span></div>
+          <div class="course-item">Jurisprudence &amp; Legal Theory <span class="course-tag">Theory</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- COMPETENCIES -->
+<section id="comp">
+  <div class="sec-inner">
+    <span class="kicker-g kicker rv">Competencies</span>
+    <h2 class="h2-light rv rv-d1">Skills sharpened<br><em>in the process.</em></h2>
+
+    <div class="comp-cols">
+      <!-- Left -->
+      <div>
+        <div class="comp-group rv rv-d1">
+          <span class="comp-label">Legal Knowledge</span>
+          <div class="skill-row">
+            <div class="skill-head"><span class="skill-name">Constitutional Law</span><span class="skill-pct">88%</span></div>
+            <div class="skill-track"><div class="skill-fill" data-w="88"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-head"><span class="skill-name">Criminal Law</span><span class="skill-pct">85%</span></div>
+            <div class="skill-track"><div class="skill-fill" data-w="85"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-head"><span class="skill-name">Civil Law &amp; Procedure</span><span class="skill-pct">82%</span></div>
+            <div class="skill-track"><div class="skill-fill" data-w="82"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-head"><span class="skill-name">Contract Law</span><span class="skill-pct">80%</span></div>
+            <div class="skill-track"><div class="skill-fill" data-w="80"></div></div>
+          </div>
+        </div>
+
+        <div class="comp-group rv rv-d2">
+          <span class="comp-label">Practice Skills</span>
+          <div class="skill-row">
+            <div class="skill-head"><span class="skill-name">Legal Research</span><span class="skill-pct">87%</span></div>
+            <div class="skill-track"><div class="skill-fill" data-w="87"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-head"><span class="skill-name">Legal Drafting</span><span class="skill-pct">78%</span></div>
+            <div class="skill-track"><div class="skill-fill" data-w="78"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-head"><span class="skill-name">Moot Court Arguments</span><span class="skill-pct">82%</span></div>
+            <div class="skill-track"><div class="skill-fill" data-w="82"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right -->
+      <div>
+        <div class="comp-quote rv rv-d1">
+          <div class="comp-quote-text">
+            Law school doesn't just teach rules. It teaches you to <em>think</em> — relentlessly, precisely, under pressure.
+          </div>
+          <div class="comp-quote-by">— A pursuit, not just a profession</div>
+        </div>
+
+        <div class="other-skills rv rv-d2">
+          <div class="other-skill">Case Law Analysis <span class="os-tag">Research</span></div>
+          <div class="other-skill">Statutory Interpretation <span class="os-tag">Analysis</span></div>
+          <div class="other-skill">Oral Advocacy <span class="os-tag">Oral</span></div>
+          <div class="other-skill">Pleading &amp; Petition Drafting <span class="os-tag">Drafting</span></div>
+          <div class="other-skill">Court Procedure &amp; Etiquette <span class="os-tag">Practice</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-inner">
+    <span class="kicker-g kicker rv">Contact</span>
+    <h2 class="h2-light rv rv-d1">Let's start a<br><em>conversation.</em></h2>
+
+    <div class="contact-cols">
+      <div class="rv rv-d1">
+        <p class="contact-sub">
+          Whether you're a fellow student, a mentor, or a firm looking to connect — Anushri is available by phone and WhatsApp. Reach out directly.
+        </p>
+
+        <div class="cta-btns">
+          <a href="tel:+919140724435" class="cta-call">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.63 12 19.79 19.79 0 0 1 1.56 3.36 2 2 0 0 1 3.56 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.5a16 16 0 0 0 6 6l.82-.82a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.38 16z"/></svg>
+            <div class="cta-call-info">
+              <span class="cta-call-label">Call directly</span>
+              <span class="cta-call-num">+91 91407 24435</span>
+            </div>
+          </a>
+          <a href="https://wa.me/919140724435" target="_blank" rel="noopener noreferrer" class="cta-whatsapp">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+            <div class="cta-whatsapp-info">
+              <span class="cta-wa-label">Message on WhatsApp</span>
+              <span class="cta-wa-num">+91 91407 24435</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="contact-meta" style="margin-top: 40px;">
+          <div class="cm-item">
+            <span class="cm-label">Phone</span>
+            <span class="cm-val"><a href="tel:+919140724435">+91 91407 24435</a></span>
+          </div>
+          <div class="cm-item">
+            <span class="cm-label">College</span>
+            <span class="cm-val">SMS Law College, Lucknow</span>
+          </div>
+          <div class="cm-item">
+            <span class="cm-label">Programme</span>
+            <span class="cm-val">BA LLB — 3rd Year (2022–2027)</span>
+          </div>
+          <div class="cm-item">
+            <span class="cm-label">Location</span>
+            <span class="cm-val">Lucknow, Uttar Pradesh, India</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-wrap rv rv-d2">
+        <div class="form-row">
+          <label>Full name</label>
+          <input type="text" class="form-input" placeholder="Your name">
+        </div>
+        <div class="form-row">
+          <label>Phone / Email</label>
+          <input type="text" class="form-input" placeholder="+91 or email@example.com">
+        </div>
+        <div class="form-row">
+          <label>Subject</label>
+          <input type="text" class="form-input" placeholder="Internship, collaboration, query...">
+        </div>
+        <div class="form-row">
+          <label>Message</label>
+          <textarea class="form-input" placeholder="What would you like to discuss?"></textarea>
+        </div>
+        <button class="form-submit">Send Message &nbsp;›</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-in">
+    <span class="footer-copy">© 2025 <em>Anushri Kuity</em>. All rights reserved.</span>
+    <ul class="footer-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#areas">Practice</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+
+
+<script>
+/* ============================================================
+   CURSOR
+   ============================================================ */
+(function(){
+  const c = document.getElementById('cur');
+  const r = document.getElementById('cur-ring');
+  if(!c||!r) return;
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  (function tick(){
+    rx+=(mx-rx)*.13; ry+=(my-ry)*.13;
+    c.style.left=mx+'px'; c.style.top=my+'px';
+    r.style.left=rx+'px'; r.style.top=ry+'px';
+    requestAnimationFrame(tick);
+  })();
+  const hover='a,button,.area-card,.stat-card,.focus-item,.course-item,.other-skill,.form-input';
+  document.querySelectorAll(hover).forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('cur-h'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('cur-h'));
+  });
+  document.addEventListener('mousedown',()=>document.body.classList.add('cur-c'));
+  document.addEventListener('mouseup',()=>document.body.classList.remove('cur-c'));
+})();
+
+/* ============================================================
+   NAV LIGHT / DARK
+   ============================================================ */
+(function(){
+  const nav=document.getElementById('nav');
+  const light=['about','education','stripe'];
+  const io=new IntersectionObserver(e=>{
+    e.forEach(x=>{
+      if(x.isIntersecting) nav.classList.toggle('lit', light.includes(x.target.id));
+    });
+  },{threshold:.5});
+  document.querySelectorAll('section[id],div[id]').forEach(s=>io.observe(s));
+})();
+
+/* ============================================================
+   SCROLL REVEALS + SKILL BARS
+   ============================================================ */
+(function(){
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting) return;
+      e.target.classList.add('vis');
+      e.target.querySelectorAll('.skill-fill').forEach(b=>{
+        b.style.width=b.dataset.w+'%';
+      });
+      io.unobserve(e.target);
+    });
+  },{threshold:.1});
+  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+})();
+
+/* ============================================================
+   HERO CANVAS — PARTICLE FIELD
+   ============================================================ */
+(function(){
+  const canvas=document.createElement('canvas');
+  canvas.style.cssText='position:absolute;inset:0;width:100%;height:100%;z-index:1;opacity:.35;pointer-events:none;';
+  document.getElementById('hero').insertBefore(canvas, document.querySelector('.hero-inner'));
+  const ctx=canvas.getContext('2d');
+  let W,H,pts=[];
+  function resize(){
+    W=canvas.width=window.innerWidth;
+    H=canvas.height=window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize',resize);
+
+  for(let i=0;i<90;i++){
+    pts.push({
+      x:Math.random()*2000-500,y:Math.random()*1200-200,
+      vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,
+      r:Math.random()*1.6+.3
+    });
+  }
+  let mox=0,moy=0;
+  document.addEventListener('mousemove',e=>{mox=e.clientX;moy=e.clientY;});
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<-50) p.x=W+50;
+      if(p.x>W+50) p.x=-50;
+      if(p.y<-50) p.y=H+50;
+      if(p.y>H+50) p.y=-50;
+    });
+    // draw connections
+    for(let i=0;i<pts.length;i++){
+      for(let j=i+1;j<pts.length;j++){
+        const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<140){
+          ctx.strokeStyle=`rgba(201,148,58,${.15*(1-d/140)})`;
+          ctx.lineWidth=.5;
+          ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke();
+        }
+      }
+      ctx.fillStyle='rgba(201,148,58,.6)';
+      ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,pts[i].r,0,Math.PI*2);ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
